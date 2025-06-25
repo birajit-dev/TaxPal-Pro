@@ -1,50 +1,69 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useAuth } from '@/lib/auth-context'
-import { Eye, EyeOff, ArrowLeft, Calculator, Shield, Sparkles } from 'lucide-react'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useAuth } from "@/lib/auth-context";
+import {
+  Eye,
+  EyeOff,
+  ArrowLeft,
+  Calculator,
+  Shield,
+  Sparkles,
+} from "lucide-react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  
-  const { login } = useAuth()
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const { login } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
-      await login(email, password)
-      router.push('/dashboard')
+      await login(email, password);
+      router.push("/dashboard");
     } catch (err: any) {
-      setError(err.message || 'Login failed. Please try again.')
+      setError(err.message || "Login failed. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
+        <div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl animate-float"
+          style={{ animationDelay: "2s" }}
+        ></div>
       </div>
-      
+
       <div className="w-full max-w-md relative z-10">
         {/* Back to Home */}
-        <Link href="/" className="inline-flex items-center text-gray-600 hover:text-blue-600 mb-8 transition-colors group">
+        <Link
+          href="/"
+          className="inline-flex items-center text-gray-600 hover:text-blue-600 mb-8 transition-colors group"
+        >
           <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Home
         </Link>
@@ -59,16 +78,21 @@ export default function LoginPage() {
                 <h1 className="text-3xl font-bold text-gradient">TaxPal Pro</h1>
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold text-gray-900">Welcome back</CardTitle>
+            <CardTitle className="text-2xl font-bold text-gray-900">
+              Welcome back
+            </CardTitle>
             <CardDescription className="text-gray-600">
               Sign in to your account to continue managing your taxes
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="text-sm font-medium text-gray-700"
+                >
                   Email Address
                 </label>
                 <Input
@@ -82,15 +106,18 @@ export default function LoginPage() {
                   className="h-12 text-base"
                 />
               </div>
-              
+
               <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium text-gray-700"
+                >
                   Password
                 </label>
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -123,13 +150,13 @@ export default function LoginPage() {
                 </div>
               )}
 
-              <Button 
-                type="submit" 
-                className="w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-elegant" 
+              <Button
+                type="submit"
+                className="w-full h-12 text-base bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-elegant"
                 loading={loading}
                 disabled={loading}
               >
-                {loading ? 'Signing in...' : 'Sign In'}
+                {loading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 
@@ -138,22 +165,30 @@ export default function LoginPage() {
                 <div className="w-full border-t border-gray-200" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500">Or continue with</span>
+                <span className="px-4 bg-white text-gray-500">
+                  Or continue with
+                </span>
               </div>
             </div>
 
             <div className="space-y-4">
               <div className="text-center">
                 <p className="text-sm text-gray-600">
-                  Don't have an account?{' '}
-                  <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                  Don't have an account?{" "}
+                  <Link
+                    href="/register"
+                    className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                  >
                     Sign up for free
                   </Link>
                 </p>
               </div>
 
               <div className="text-center">
-                <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-500 transition-colors">
+                <Link
+                  href="/forgot-password"
+                  className="text-sm text-blue-600 hover:text-blue-500 transition-colors"
+                >
                   Forgot your password?
                 </Link>
               </div>
@@ -162,14 +197,23 @@ export default function LoginPage() {
         </Card>
 
         {/* Demo Credentials */}
-        <div className="mt-6 p-4 bg-blue-50/80 backdrop-blur-sm rounded-xl border border-blue-200/50 animate-fade-in" style={{animationDelay: '0.2s'}}>
+        <div
+          className="mt-6 p-4 bg-blue-50/80 backdrop-blur-sm rounded-xl border border-blue-200/50 animate-fade-in"
+          style={{ animationDelay: "0.2s" }}
+        >
           <div className="flex items-center mb-3">
             <Sparkles className="h-4 w-4 text-blue-600 mr-2" />
-            <h3 className="text-sm font-medium text-blue-900">Demo Credentials</h3>
+            <h3 className="text-sm font-medium text-blue-900">
+              Demo Credentials
+            </h3>
           </div>
           <div className="text-xs text-blue-700 space-y-1">
-            <p><strong>Email:</strong> demo@taxpalpro.com</p>
-            <p><strong>Password:</strong> demo123</p>
+            <p>
+              <strong>Email:</strong> demo@taxpalpro.com
+            </p>
+            <p>
+              <strong>Password:</strong> demo123
+            </p>
             <p className="text-blue-600 mt-2 flex items-center">
               <Shield className="h-3 w-3 mr-1" />
               Use these credentials to explore the app safely
@@ -178,5 +222,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
-} 
+  );
+}
