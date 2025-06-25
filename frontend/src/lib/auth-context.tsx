@@ -1,80 +1,90 @@
-'use client'
+"use client";
 
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { api, User } from './api'
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { api, User } from "./api";
 
 interface AuthContextType {
-  user: User | null
-  loading: boolean
-  login: (email: string, password: string) => Promise<void>
-  register: (firstName: string, lastName: string, email: string, password: string) => Promise<void>
-  logout: () => Promise<void>
-  refreshUser: () => Promise<void>
+  user: User | null;
+  loading: boolean;
+  login: (email: string, password: string) => Promise<void>;
+  register: (
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) => Promise<void>;
+  logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check if user is already logged in
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem("token");
     if (token) {
-      refreshUser()
+      refreshUser();
     } else {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
   const refreshUser = async () => {
     try {
-      const response = await api.getCurrentUser()
+      const response = await api.getCurrentUser();
       if (response.success && response.data) {
-        setUser(response.data.user)
+        setUser(response.data.user);
       }
     } catch (error) {
-      console.error('Failed to refresh user:', error)
+      console.error("Failed to refresh user:", error);
       // Clear invalid token
-      api.clearToken()
-      setUser(null)
+      api.clearToken();
+      setUser(null);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await api.login(email, password)
+      const response = await api.login(email, password);
       if (response.success && response.data) {
-        setUser(response.data.user)
+        setUser(response.data.user);
       }
     } catch (error) {
-      throw error
+      throw error;
     }
-  }
+  };
 
-  const register = async (firstName: string, lastName: string, email: string, password: string) => {
+  const register = async (
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) => {
     try {
-      const response = await api.register(firstName, lastName, email, password)
+      const response = await api.register(firstName, lastName, email, password);
       if (response.success && response.data) {
-        setUser(response.data.user)
+        setUser(response.data.user);
       }
     } catch (error) {
-      throw error
+      throw error;
     }
-  }
+  };
 
   const logout = async () => {
     try {
-      await api.logout()
+      await api.logout();
     } catch (error) {
-      console.error('Logout error:', error)
+      console.error("Logout error:", error);
     } finally {
-      setUser(null)
+      setUser(null);
     }
-  }
+  };
 
   const value = {
     user,
@@ -83,15 +93,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     register,
     logout,
     refreshUser,
-  }
+  };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
+    throw new Error("useAuth must be used within an AuthProvider");
   }
-  return context
-} 
+  return context;
+}
